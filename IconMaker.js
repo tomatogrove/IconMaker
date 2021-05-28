@@ -16,6 +16,8 @@ let optionsArray = [["png/puppy0.jpg", "png/puppy1.jpg", "png/puppy2.jpg"],
 let previousIndex = -1;
 
 function changeImg(optionsArrayIndex) {
+    deleteImg();
+    
     let closetBottom = document.getElementById("closet-bottom");
     
     for (let i = 0; i < optionsArray[optionsArrayIndex].length; i++) {
