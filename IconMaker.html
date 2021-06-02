@@ -7,7 +7,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com"/>
 		<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400&display=swap" rel="stylesheet" type="text/css"/>
 	</head>
-	<body>
+	<body onload="draw();">
 		<div>
 			<h1 id="site-header"> 
 				Let's Make an ICON ! 
@@ -15,12 +15,16 @@
 		</div>
 		
 		<div>
-			<img 
+			<!--
+				<img 
 			id="icon-in-progress" 
 			class="icon-workstation"
 			src="https://i.imgur.com/xfUDN8K.jpg" 
 			alt="Your new icon in progress!"
 			/>
+			-->
+			
+			<canvas id="test"></canvas>
 			
 			<!-- This will be the closet? -->
 			<div id="closet" class="closet-style">

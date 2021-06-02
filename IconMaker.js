@@ -8,9 +8,27 @@ Math for figuring out tint color of background... find out where to put this lat
 
 */
 
-let optionsArray = [["png/puppy0.jpg", "png/puppy1.jpg", "png/puppy2.jpg"],
-["png/kittens0.jpg", "png/kittens1.jpg"],
-["png/bunny0.jpg", "png/bunny1.jpg", "png/bunny2.jpg", "png/bunny3.jpg"]];
+let optionsArray = [["images/base0.png"],
+["images/shirt0.png", "images/shirt1.png", "images/shirt2.png"],
+["images/makeup0.png", "images/makeup1.png"]];
+
+function draw() {
+    let canvas = document.getElementById('test');
+    if (canvas.getContext) {
+        let context = canvas.getContext('2d');
+        
+        let testImg = [];
+
+        for (let i = 0; i < 3; i++) {
+            testImg[i] = document.createElement('img');
+            testImg[i].onload = function() {
+                context.drawImage(testImg[i], 0, 0);
+            }
+            testImg[i].id = optionsArray[i][0].split("/")[1].split(".")[0];
+            testImg[i].src = optionsArray[i][0];
+        }
+    }
+}
 
 
 let previousIndex = -1;
@@ -25,6 +43,10 @@ function changeImg(optionsArrayIndex) {
         drawerIcons.id = "closet-bottom-imgs-" + i;
         drawerIcons.src = optionsArray[optionsArrayIndex][i];
         drawerIcons.classList.add("drawer-icons");
+        drawerIcons.onclick = function() {
+            changeCanvas(drawerIcons.src, drawerIcons.id, optionsArrayIndex, i);
+            alert("poggy woggy");
+        }
         
         closetBottom.appendChild(drawerIcons);  
     }
@@ -40,5 +62,14 @@ function deleteImg() {
         }
     }
     
+}
+
+function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
+    deleteCanvas();
+
+}
+
+function deleteCanvas() {
+
 }
 
