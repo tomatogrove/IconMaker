@@ -7,10 +7,11 @@ Math for figuring out tint color of background... find out where to put this lat
     https://maketintsandshades.com/about
 
 */
-
+let innerIndex = [-1,-1,-1,-1,-1,-1];
 let optionsArray = [["images/base0.png"],
 ["images/shirt0.png", "images/shirt1.png", "images/shirt2.png"],
-["images/makeup0.png", "images/makeup1.png"]];
+["images/makeup0.png", "images/makeup1.png"],
+["images/glasses0.png","images/glasses1.png"]];
 
 function draw() {
     let canvas = document.getElementById('test');
@@ -26,6 +27,10 @@ function draw() {
             }
             testImg[i].id = optionsArray[i][0].split("/")[1].split(".")[0];
             testImg[i].src = optionsArray[i][0];
+            testImg[i].style.position = "relative";
+            testImg[i].style.zIndex = i;
+
+            innerIndex[i] = 0;
         }
     }
 }
@@ -44,7 +49,11 @@ function changeImg(optionsArrayIndex) {
         drawerIcons.src = optionsArray[optionsArrayIndex][i];
         drawerIcons.classList.add("drawer-icons");
         drawerIcons.onclick = function() {
-            changeCanvas(drawerIcons.src, drawerIcons.id, optionsArrayIndex, i);
+            let array = changeCanvas(drawerIcons.src, drawerIcons.id, optionsArrayIndex, i);
+            let canvasLayer = array[1];
+            let context = array[0];
+
+            context.drawImage(canvasLayer, 0, 0);
             alert("poggy woggy");
         }
         
@@ -65,11 +74,32 @@ function deleteImg() {
 }
 
 function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
-    deleteCanvas();
+    deleteCanvas(outerIndex, innerIndex);
+
+    let canvas = document.getElementById('test');
+
+    if (canvas.getContext) {
+        let context = canvas.getContext('2d');
+
+        let canvasLayer = document.createElement('img');
+
+        canvasLayer.id = "canvas-layer" + outerIndex;
+        canvasLayer.src = imgSrc;
+        canvasLayer.classList.add("canvas-layers");
+        canvasLayer.style.position = "relative";
+        canvasLayer.style.zIndex = outerIndex;
+
+        innerIndex[outerIndex] = innerIndex;
+
+        return [context, canvasLayer];
+    }
 
 }
 
-function deleteCanvas() {
-
+function deleteCanvas(outerIndex, innerIndex) {
+    if (innerIndex[innerIndex] >= 0) {
+        let removeCanvas = document.getElementById("canvas-layer" + outerIndex);
+        removeCanvas.remove();
+    }
 }
 
