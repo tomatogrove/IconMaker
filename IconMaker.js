@@ -7,30 +7,39 @@ Math for figuring out tint color of background... find out where to put this lat
     https://maketintsandshades.com/about
 
 */
-let innerIndex = [-1,-1,-1,-1,-1,-1];
+/*
+two arrays
+*/
+let layerCounter = [-1,-1,-1,-1,-1,-1];
 let optionsArray = [["images/base0.png"],
 ["images/shirt0.png", "images/shirt1.png", "images/shirt2.png"],
 ["images/makeup0.png", "images/makeup1.png"],
 ["images/glasses0.png","images/glasses1.png"]];
 
 function draw() {
-    let canvas = document.getElementById('test');
-    if (canvas.getContext) {
-        let context = canvas.getContext('2d');
-        
-        let testImg = [];
+    let enterDiv = document.getElementById('icon-workstation');
 
-        for (let i = 0; i < 3; i++) {
+    let testImg = [];
+
+    for(let i = 0; i < 3; i++){
+        let canvas = document.createElement('canvas');
+    
+        if (canvas.getContext) {
+            let context = canvas.getContext('2d');
+
             testImg[i] = document.createElement('img');
-            testImg[i].onload = function() {
-                context.drawImage(testImg[i], 0, 0);
-            }
-            testImg[i].id = optionsArray[i][0].split("/")[1].split(".")[0];
-            testImg[i].src = optionsArray[i][0];
-            testImg[i].style.position = "relative";
-            testImg[i].style.zIndex = i;
+                testImg[i].onload = function() {
+                    context.drawImage(testImg[i], 0, 0);
+                }
+                canvas.id = "canvas-layer" + i;
+                canvas.classList.add("canvas-layers");
+                testImg[i].src = optionsArray[i][0];
+                testImg[i].style.zIndex = i;
 
-            innerIndex[i] = 0;
+                console.log(canvas.id + " is created");
+
+                layerCounter[i] = 0;
+                enterDiv.append(canvas);
         }
     }
 }
@@ -54,7 +63,6 @@ function changeImg(optionsArrayIndex) {
             let context = array[0];
 
             context.drawImage(canvasLayer, 0, 0);
-            alert("poggy woggy");
         }
         
         closetBottom.appendChild(drawerIcons);  
@@ -76,20 +84,23 @@ function deleteImg() {
 function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
     deleteCanvas(outerIndex, innerIndex);
 
-    let canvas = document.getElementById('test');
+    let enterDiv = document.getElementById('icon-workstation');
+    let canvas = document.createElement('canvas');
+    enterDiv.appendChild(canvas);
 
     if (canvas.getContext) {
         let context = canvas.getContext('2d');
 
         let canvasLayer = document.createElement('img');
 
-        canvasLayer.id = "canvas-layer" + outerIndex;
+        canvas.id = "canvas-layer" + outerIndex;
         canvasLayer.src = imgSrc;
-        canvasLayer.classList.add("canvas-layers");
-        canvasLayer.style.position = "relative";
+        canvas.classList.add("canvas-layers");
         canvasLayer.style.zIndex = outerIndex;
 
-        innerIndex[outerIndex] = innerIndex;
+        console.log(canvasLayer.id + " is created");
+
+        layerCounter[outerIndex] = innerIndex;
 
         return [context, canvasLayer];
     }
@@ -97,8 +108,12 @@ function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
 }
 
 function deleteCanvas(outerIndex, innerIndex) {
-    if (innerIndex[innerIndex] >= 0) {
+    console.log(layerCounter[outerIndex],"innerIndex = " + innerIndex, "outerIndex = " + outerIndex);
+    if (layerCounter[outerIndex] >= 0) {
         let removeCanvas = document.getElementById("canvas-layer" + outerIndex);
+        console.log("the id that is being removed is " + "canvas-layer" + outerIndex, removeCanvas);
+        let removeCanvasContext = removeCanvas.getContext('2d');
+        
         removeCanvas.remove();
     }
 }

@@ -48,8 +48,8 @@ h1 {
 	
 }
 
-#test {
-	position: relative; left: 15%; bottom: 20%;
+.canvas-layers {
+	position: absolute; left: 15%; bottom: 20%;
 }
 
 .drawer-icons {
