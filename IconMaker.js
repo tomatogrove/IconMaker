@@ -8,7 +8,11 @@ Math for figuring out tint color of background... find out where to put this lat
 
 */
 /*
-two arrays
+Two arrays that keep track of the images and order.
+layerCounter - the indices within it represent each outer array within optionsArray. The numbers 
+within each index represent which image is chosen.
+    ex: [0,2,1,0,...] would mean that base0, shirt2, makeup1, and glasses0 are all selected.
+optionsArray - a two dimensional array that organizes each image path.
 */
 let layerCounter = [-1,-1,-1,-1,-1,-1];
 let optionsArray = [["images/base0.png"],
@@ -16,6 +20,9 @@ let optionsArray = [["images/base0.png"],
 ["images/makeup0.png", "images/makeup1.png"],
 ["images/glasses0.png","images/glasses1.png"]];
 
+/* 
+A function that is run when the page loads. It draws the first layers of the icon.
+*/
 function draw() {
     let enterDiv = document.getElementById('icon-workstation');
 
@@ -33,10 +40,9 @@ function draw() {
                 }
                 canvas.id = "canvas-layer" + i;
                 canvas.classList.add("canvas-layers");
-                testImg[i].src = optionsArray[i][0];
-                testImg[i].style.zIndex = i;
+                canvas.style.zIndex = i;
 
-                console.log(canvas.id + " is created");
+                testImg[i].src = optionsArray[i][0];
 
                 layerCounter[i] = 0;
                 enterDiv.append(canvas);
@@ -44,7 +50,12 @@ function draw() {
     }
 }
 
+/*
+previousIndex - counter that works similary to layerCounter except with only one variable.
 
+changeImg - function that changes the tabslider icon selected when clicked on. It displays 
+the images associated with the outer index of optionsArray.
+*/
 let previousIndex = -1;
 
 function changeImg(optionsArrayIndex) {
@@ -71,6 +82,9 @@ function changeImg(optionsArrayIndex) {
     previousIndex = optionsArrayIndex;
 }
 
+/*
+deleteImg - deletes the images displayed in the bottom half of the "closet"
+*/
 function deleteImg() {
     if (previousIndex >= 0) {
         for (let i = 0; i < optionsArray[previousIndex].length; i++) {
@@ -81,6 +95,11 @@ function deleteImg() {
     
 }
 
+/*
+changeCanvas - a function that is activated on clicking one of the images in the 
+bottom half of the closet. It creates a new canvas element and produces an image
+that is identical to the one clicked on.
+*/
 function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
     deleteCanvas(outerIndex, innerIndex);
 
@@ -92,13 +111,11 @@ function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
         let context = canvas.getContext('2d');
 
         let canvasLayer = document.createElement('img');
+        canvasLayer.src = imgSrc;
 
         canvas.id = "canvas-layer" + outerIndex;
-        canvasLayer.src = imgSrc;
         canvas.classList.add("canvas-layers");
-        canvasLayer.style.zIndex = outerIndex;
-
-        console.log(canvasLayer.id + " is created");
+        canvas.style.zIndex = outerIndex;
 
         layerCounter[outerIndex] = innerIndex;
 
@@ -107,13 +124,14 @@ function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
 
 }
 
+/*
+deleteCanvas - a function that runs within changeCanvas. It deletes any canvas elements that may
+share an id.
+*/ 
 function deleteCanvas(outerIndex, innerIndex) {
     console.log(layerCounter[outerIndex],"innerIndex = " + innerIndex, "outerIndex = " + outerIndex);
     if (layerCounter[outerIndex] >= 0) {
         let removeCanvas = document.getElementById("canvas-layer" + outerIndex);
-        console.log("the id that is being removed is " + "canvas-layer" + outerIndex, removeCanvas);
-        let removeCanvasContext = removeCanvas.getContext('2d');
-        
         removeCanvas.remove();
     }
 }
