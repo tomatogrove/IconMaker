@@ -151,10 +151,12 @@ function downloadImage() {
             let canvasLayer = document.createElement('img');
             canvasLayer.src = optionsArray[i][layerCounter[i]];
             
-            saveButton.click = function() {
+            canvasLayer.onload = function() {
                 context.drawImage(canvasLayer, 0, 0);
                 console.log("image layer " + optionsArray[i][layerCounter[i]] + " added");
             }
+            
+            canvasLayer.src = optionsArray[i][layerCounter[i]];
         }
     }
 
