@@ -136,3 +136,30 @@ function deleteCanvas(outerIndex, innerIndex) {
     }
 }
 
+/*
+downloadImage - a function that consolodates and downloads the icon created.
+*/
+function downloadImage() {
+    let canvas = document.createElement('canvas');
+    let saveButton = document.getElementById("save-button");
+    let anchor = document.getElementById("anchor");
+
+    for (let i = 0; i < layerCounter.length; i++) {
+        if (layerCounter[i] >= 0) {
+            let context = canvas.getContext('2d');
+
+            let canvasLayer = document.createElement('img');
+            canvasLayer.src = optionsArray[i][layerCounter[i]];
+            
+            saveButton.click = function() {
+                context.drawImage(canvasLayer, 0, 0);
+                console.log("image layer " + optionsArray[i][layerCounter[i]] + " added");
+            }
+        }
+    }
+
+    let imgToDataURL = canvas.toDataURL();
+    anchor.href = imgToDataURL;
+    anchor.download = "your-icon.png";
+}
+

@@ -12,7 +12,7 @@ h1 {
 
 .icon-workstation {
 	width: 25%;
-	position: relative; left: 20%;
+	position: relative; left: 20%; top: 20%;
 }
 
 .closet-style {
@@ -46,6 +46,10 @@ h1 {
 	overflow-x: hidden;
 	border-radius: 0 0 15px 15px;
 	
+}
+
+#save-button {
+	width:10%;
 }
 
 .canvas-layers {
