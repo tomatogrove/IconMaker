@@ -14,7 +14,7 @@ within each index represent which image is chosen.
     ex: [0,2,1,0,...] would mean that base0, shirt2, makeup1, and glasses0 are all selected.
 optionsArray - a two dimensional array that organizes each image path.
 */
-let layerCounter = [-1,-1,-1,-1,-1,-1];
+let layerCounter = [-1,-1,-1,-1];
 let optionsArray = [["images/base0.png"],
 ["images/shirt0.png", "images/shirt1.png", "images/shirt2.png"],
 ["images/makeup0.png", "images/makeup1.png"],
@@ -129,8 +129,7 @@ deleteCanvas - a function that runs within changeCanvas. It deletes any canvas e
 share an id.
 */ 
 function deleteCanvas(outerIndex, innerIndex) {
-    console.log(layerCounter[outerIndex],"innerIndex = " + innerIndex, "outerIndex = " + outerIndex);
-    if (layerCounter[outerIndex] >= 0) {
+        if (layerCounter[outerIndex] >= 0) {
         let removeCanvas = document.getElementById("canvas-layer" + outerIndex);
         removeCanvas.remove();
     }
@@ -149,19 +148,19 @@ function downloadImage() {
             let context = canvas.getContext('2d');
 
             let canvasLayer = document.createElement('img');
-            canvasLayer.src = optionsArray[i][layerCounter[i]];
             
             canvasLayer.onload = function() {
                 context.drawImage(canvasLayer, 0, 0);
                 console.log("image layer " + optionsArray[i][layerCounter[i]] + " added");
             }
-            
             canvasLayer.src = optionsArray[i][layerCounter[i]];
         }
     }
-
+    
+    //document.getElementById('test').append(canvas);
     let imgToDataURL = canvas.toDataURL();
     anchor.href = imgToDataURL;
-    anchor.download = "your-icon.png";
+    console.log(anchor.href + " this is the href");
+    anchor.download = "your-icon.png"; 
 }
 
