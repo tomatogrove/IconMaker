@@ -26,7 +26,7 @@ A function that is run when the page loads. It draws the first layers of the ico
 function draw() {
     let enterDiv = document.getElementById('icon-workstation');
 
-    let testImg = [];
+    let canvasLayer = [];
 
     for(let i = 0; i < 3; i++){
         let canvas = document.createElement('canvas');
@@ -34,18 +34,19 @@ function draw() {
         if (canvas.getContext) {
             let context = canvas.getContext('2d');
 
-            testImg[i] = document.createElement('img');
-                testImg[i].onload = function() {
-                    context.drawImage(testImg[i], 0, 0);
-                }
-                canvas.id = "canvas-layer" + i;
-                canvas.classList.add("canvas-layers");
-                canvas.style.zIndex = i;
+            canvasLayer[i] = document.createElement('img');
+            canvasLayer[i].onload = function() {
+                context.drawImage(canvasLayer[i], 0, 0);
+            }
 
-                testImg[i].src = optionsArray[i][0];
+            canvas.id = "canvas-layer" + i;
+            canvas.classList.add("canvas-layers");
+            canvas.style.zIndex = i;
 
-                layerCounter[i] = 0;
-                enterDiv.append(canvas);
+            canvasLayer[i].src = optionsArray[i][0];
+
+            layerCounter[i] = 0;
+            enterDiv.append(canvas);
         }
     }
 }
@@ -69,7 +70,7 @@ function changeImg(optionsArrayIndex) {
         drawerIcons.src = optionsArray[optionsArrayIndex][i];
         drawerIcons.classList.add("drawer-icons");
         drawerIcons.onclick = function() {
-            let array = changeCanvas(drawerIcons.src, drawerIcons.id, optionsArrayIndex, i);
+            let array = changeCanvas(drawerIcons.src, optionsArrayIndex, i);
             let canvasLayer = array[1];
             let context = array[0];
 
@@ -100,8 +101,8 @@ changeCanvas - a function that is activated on clicking one of the images in the
 bottom half of the closet. It creates a new canvas element and produces an image
 that is identical to the one clicked on.
 */
-function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
-    deleteCanvas(outerIndex, innerIndex);
+function changeCanvas(imgSrc, outerIndex, innerIndex) {
+    deleteCanvas(outerIndex);
 
     let enterDiv = document.getElementById('icon-workstation');
     let canvas = document.createElement('canvas');
@@ -128,7 +129,7 @@ function changeCanvas(imgSrc, imgId, outerIndex, innerIndex) {
 deleteCanvas - a function that runs within changeCanvas. It deletes any canvas elements that may
 share an id.
 */ 
-function deleteCanvas(outerIndex, innerIndex) {
+function deleteCanvas(outerIndex) {
         if (layerCounter[outerIndex] >= 0) {
         let removeCanvas = document.getElementById("canvas-layer" + outerIndex);
         removeCanvas.remove();
@@ -140,27 +141,23 @@ downloadImage - a function that consolodates and downloads the icon created.
 */
 function downloadImage() {
     let canvas = document.createElement('canvas');
-    let saveButton = document.getElementById("save-button");
     let anchor = document.getElementById("anchor");
 
     for (let i = 0; i < layerCounter.length; i++) {
-        if (layerCounter[i] >= 0) {
-            let context = canvas.getContext('2d');
-
-            let canvasLayer = document.createElement('img');
-            
-            canvasLayer.onload = function() {
-                context.drawImage(canvasLayer, 0, 0);
-                console.log("image layer " + optionsArray[i][layerCounter[i]] + " added");
-            }
-            canvasLayer.src = optionsArray[i][layerCounter[i]];
+        if (document.getElementById('canvas-layer'+ i)) {
+        let context = canvas.getContext('2d');
+        let canvasLayer = document.getElementById('canvas-layer'+ i);
+        console.log(canvasLayer);
+        
+        context.drawImage(canvasLayer, 0, 0);
+        console.log("image layer " + optionsArray[i][layerCounter[i]] + " added");
         }
     }
-    
-    //document.getElementById('test').append(canvas);
+
     let imgToDataURL = canvas.toDataURL();
     anchor.href = imgToDataURL;
     console.log(anchor.href + " this is the href");
     anchor.download = "your-icon.png"; 
+       
 }
 
